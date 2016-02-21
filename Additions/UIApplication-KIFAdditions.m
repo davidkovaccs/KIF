@@ -170,6 +170,7 @@ static const void *KIFRunLoopModesKey = &KIFRunLoopModesKey;
     outputPath = [outputPath stringByAppendingPathComponent:imageName];
     outputPath = [outputPath stringByAppendingPathExtension:@"png"];
 
+    NSLog(@"\n[[ATTACHMENT|%@]]\n", outputPath);
     if (![UIImagePNGRepresentation(image) writeToFile:outputPath atomically:YES]) {
         if (error) {
             *error = [NSError KIFErrorWithFormat:@"Could not write file at path %@", outputPath];
@@ -188,11 +189,11 @@ static const void *KIFRunLoopModesKey = &KIFRunLoopModesKey;
     NSString *imageName = [filename lastPathComponent];
     
     if (lineNumber > 0) {
-        imageName = [imageName stringByAppendingFormat:@", line %lu", (unsigned long)lineNumber];
+        imageName = [imageName stringByAppendingFormat:@"_line_%lu", (unsigned long)lineNumber];
     }
     
     if (description.length) {
-        imageName = [imageName stringByAppendingFormat:@", %@", description];
+        imageName = [imageName stringByAppendingFormat:@"_%@", description];
     }
 
     return imageName;
