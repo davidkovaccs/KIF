@@ -48,22 +48,16 @@ The testing target will add a header and implementation file, likely "Acceptance
 Once your test target set up, add the following to your Podfile file. Use your target's name as appropriate.
 
 ```Ruby
-target 'Acceptance Tests', :exclusive => true do
+target 'Your Apps' do
+  ...
+end
+
+target 'Acceptance Tests' do
   pod 'KIF', '~> 3.0', :configurations => ['Debug']
 end
 ```
 
-The `:exclusive => true` option will prevent CocoaPods from including dependencies from your main target in your test target causing double-linking issues when you test link against the app.
-
 After running `pod install` complete the tasks in [**Final Test Target Configurations**](#final-test-target-configurations) below for the final details on getting your tests to run.
-
-Note: if you are using KIF with OCUnit, you need to use the OCUnit version of KIF as follows:
-
-```Ruby
-target 'Acceptance Tests', :exclusive => true do
-  pod 'KIF/OCUnit', '~> 3.0'
-end
-```
 
 Installation (from GitHub)
 --------------------------
@@ -256,21 +250,21 @@ If you want to write your test cases in Swift, you'll need to keep two things in
 import KIF
  
 extension XCTestCase {
-    func tester(file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
+    func tester(file : String = #file, _ line : Int = #line) -> KIFUITestActor {
         return KIFUITestActor(inFile: file, atLine: line, delegate: self)
     }
 
-    func system(file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
+    func system(file : String = #file, _ line : Int = #line) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
     }
 }
 
 extension KIFTestActor {
-    func tester(file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
+    func tester(file : String = #file, _ line : Int = #line) -> KIFUITestActor {
         return KIFUITestActor(inFile: file, atLine: line, delegate: self)
     }
 
-    func system(file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
+    func system(file : String = #file, _ line : Int = #line) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
     }
 }

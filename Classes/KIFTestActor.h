@@ -1,5 +1,5 @@
 //
-//  KIFTester.h
+//  KIFTestActor.h
 //  KIF
 //
 //  Created by Brian Nickel on 12/13/12.
@@ -51,7 +51,6 @@ return KIFTestStepResultWait; \
 } \
 })
 
-
 /*!
  @enum KIFTestStepResult
  @abstract Result codes from a test step.
@@ -83,6 +82,8 @@ typedef void (^KIFTestCompletionBlock)(KIFTestStepResult result, NSError *error)
 
 @interface KIFTestActor : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 + (instancetype)actorInFile:(NSString *)file atLine:(NSInteger)line delegate:(id<KIFTestActorDelegate>)delegate;
 
 @property (strong, nonatomic, readonly) NSString *file;
@@ -97,7 +98,6 @@ typedef void (^KIFTestCompletionBlock)(KIFTestStepResult result, NSError *error)
 - (void)runBlock:(KIFTestExecutionBlock)executionBlock complete:(KIFTestCompletionBlock)completionBlock;
 - (void)runBlock:(KIFTestExecutionBlock)executionBlock timeout:(NSTimeInterval)timeout;
 - (void)runBlock:(KIFTestExecutionBlock)executionBlock;
-
 
 /*!
  @discussion Attempts to run the test block similar to -runBlock:complete:timeout: but does not halt the test on completion, instead returning NO on failure and providing an error description to the optional error parameter.
@@ -160,7 +160,13 @@ typedef void (^KIFTestCompletionBlock)(KIFTestStepResult result, NSError *error)
  */
 - (void)waitForTimeInterval:(NSTimeInterval)timeInterval;
 
-
+/*!
+ @abstract Waits for a certain amount of time before returning.  The time delay is optionally scaled relative to the current animation speed.
+ @discussion In general when waiting for the app to get into a known state, it's better to use -waitForTappableViewWithAccessibilityLabel:, however this step may be useful in some situations as well.
+ @param timeInterval The number of seconds to wait before returning.
+ @param scaleTime Whether to scale the timeInterval relative to the current animation speed
+ */
+- (void)waitForTimeInterval:(NSTimeInterval)timeInterval relativeToAnimationSpeed:(BOOL)scaleTime;
 
 @end
 
